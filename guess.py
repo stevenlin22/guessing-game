@@ -1,24 +1,25 @@
 import random
 
-play_again = 'z'
-round_number = 0
+play_again = 'y'
+round_number = 1
 number_of_guesses = 11
 score_total = 0
 score_multiplier = 1
 threshold = 0
+times_ran = 0
 name = input("Enter your name. If you want to quit, enter 'q': ")
 
 while True:
     score = number_of_guesses - 1
     randomnum = random.randint(1,100)
-    if play_again == 'n':
-        print("--------")
-        print("womp womp you suck ahahahaha\nYour final score was only: ", score_total)
-        break
-    elif play_again == 'y':
-        print("--------")
-        print("Reloading time .......")
-    round_number += 1
+    if times_ran != 0:
+        if play_again == 'y':
+            print("--------")
+            print("Reloading time .......")
+        elif play_again != 'y':
+            print("--------")
+            print("womp womp you suck ahahahaha\nYour final score was only: ", score_total)
+            break
     low_guess = 0
     high_guess = 0
     if name == 'q':
@@ -40,7 +41,13 @@ while True:
             print("Out of Guesses. Boing Boing Boing Bonk!\nYour final score was: ", score_total)
         for i in range(1,number_of_guesses):
             print("You have ",number_of_guesses-i," tries.")
-            guess = int(input("Make a guess from 1-100: "))
+            guess = input("Make a guess from 1-100: ")
+            try:
+                guess = int(guess)
+            except ValueError:
+                print("That's not a number dumbass. Do better next time you run the code. I'm taking a guess off for that tomfoolery")
+                score -= 1
+                continue
             if guess == randomnum:
                 if i == 1:
                     print("--------")
@@ -56,7 +63,8 @@ while True:
                     score *= score_multiplier
                     score_total += score
                     print("Your scored: ", score,"\nYour multiplier is: ", score_multiplier, "\nYour total score is now: ", score_total)
-                play_again = input("Would you like to continue? 'y' for Yes!! 'n' for nah: ")
+                play_again = input("Would you like to continue? 'y' for Yes!! Anything else for 'I'm Good': ")
+                round_number += 1
                 break
             elif guess < randomnum:
                 print("--------")
@@ -106,4 +114,5 @@ while True:
             print(low_guess, "of your guesses were low, while", high_guess, "of your guesses were high")
             score_total += score
             print("Your scored: ", score,"\nYour multiplier is: ", score_multiplier, "\nYour total score is now: ", score_total)
-            play_again = input("Would you like to continue? 'y' for not being a loser and keep rising up 'n' for being a sucker and giving up: ")
+            play_again = input("Would you like to continue? 'y' for not being a loser and keep rising up, anything else for being a sucker and giving up: ")
+    times_ran += 1
